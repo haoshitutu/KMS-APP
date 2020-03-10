@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * @Description 人员数据库实体类
@@ -20,5 +21,8 @@ import javax.persistence.Table;
 @ApiModel(description = "人员数据库实体类")
 @Entity
 @Table(name = "xx")
-public class UserDtoEntity {
+public class UserDtoEntity implements Serializable {
+    private static final long serialVersionUID = 2897125212340934445L;
+
+    private String id;
 }

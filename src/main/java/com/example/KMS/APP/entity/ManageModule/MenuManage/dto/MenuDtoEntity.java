@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * @Description 菜单数据库实体类
@@ -20,5 +21,8 @@ import javax.persistence.Table;
 @ApiModel(description = "菜单数据库实体类")
 @Entity
 @Table(name = "xx")
-public class MenuDtoEntity {
+public class MenuDtoEntity implements Serializable {
+    private static final long serialVersionUID = 7211991404785526667L;
+
+    private String id;
 }

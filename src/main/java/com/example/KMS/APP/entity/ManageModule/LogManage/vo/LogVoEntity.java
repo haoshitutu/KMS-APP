@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * @Description 日志返给前端参数实体
  * @Author tutu
@@ -15,5 +17,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @ApiModel(description = "日志返给前端参数实体")
-public class LogVoEntity {
+public class LogVoEntity implements Serializable {
+    private static final long serialVersionUID = 1743093875645670483L;
+
+    private String id;
 }

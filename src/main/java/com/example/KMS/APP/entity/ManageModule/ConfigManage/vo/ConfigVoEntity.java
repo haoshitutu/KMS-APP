@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * @Description 配置返给前端参数实体
  * @Author tutu
@@ -15,5 +17,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @ApiModel(description = "配置返给前端参数实体")
-public class ConfigVoEntity {
+public class ConfigVoEntity implements Serializable {
+    private static final long serialVersionUID = 8554573009977145786L;
+
+    private String id;
 }

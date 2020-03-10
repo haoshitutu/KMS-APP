@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Menu">
+    <!-- 查询菜单 -->
+    <select id="queryMenu"
+            parameterType="com.example.KMS.APP.entity.ManageModule.MenuManage.dto.MenuDtoEntity"
+            resultType="com.example.KMS.APP.entity.ManageModule.MenuManage.dto.MenuDtoEntity"></select>
+
+    <!-- 添加菜单 -->
+    <insert id="addMenu"
+            parameterType="com.example.KMS.APP.entity.ManageModule.MenuManage.dto.MenuDtoEntity"></insert>
+
+    <!-- 修改菜单 -->
+    <update id="updateMenu"
+            parameterType="com.example.KMS.APP.entity.ManageModule.MenuManage.dto.MenuDtoEntity"></update>
+
+    <!-- 删除菜单 -->
+    <delete id="deleteMenu"
+            parameterType="java.lang.String"></delete>
+</mapper>
