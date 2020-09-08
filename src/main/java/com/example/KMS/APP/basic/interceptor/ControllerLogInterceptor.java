@@ -1,6 +1,7 @@
 package com.example.KMS.APP.basic.interceptor;
 
 import com.example.KMS.APP.utils.HttpUtil;
+import com.example.KMS.APP.utils.TimeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -40,7 +41,7 @@ public class ControllerLogInterceptor {
 
         StringBuilder sb = new StringBuilder();
         sb.append("\r\n=====================================").append("\r\n");
-        sb.append("Request Start:" + new Date()).append("\r\n");
+        sb.append("Request Start:" + TimeUtil.getNowDateTime()).append("\r\n");
         sb.append("Request Url:" + request.getRequestURL().toString()).append("\r\n");
         sb.append("Http Method:" + request.getMethod()).append("\r\n");
         sb.append("IP:" + HttpUtil.getReqIp(request)).append("\r\n");
@@ -56,7 +57,7 @@ public class ControllerLogInterceptor {
         } finally {
             long costMs = System.currentTimeMillis() - beginTime;
             sb.append("Request Result:" + result).append("\r\n");
-            sb.append("Request End:" + new Date() + "used:" + costMs + "ms").append("\r\n");
+            sb.append("Request End:" + TimeUtil.getNowDateTime() + " used:" + costMs + "ms").append("\r\n");
             sb.append("\r\n=====================================").append("\r\n");
             log.info(sb.toString());
         }

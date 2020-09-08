@@ -11,6 +11,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -23,7 +24,7 @@ import java.util.List;
  * @Date 2019/6/12 16:32
  * @Version 1.0
  **/
-@RestControllerAdvice
+@ControllerAdvice
 @Slf4j
 public class ExceptionControllerAdvice {
 
@@ -33,7 +34,7 @@ public class ExceptionControllerAdvice {
      * @return 消息
      */
     @ExceptionHandler(value = Exception.class)
-    public WebResponse<String> exceptionHandler(BusinessException ex) {
+    public WebResponse<String> exceptionHandler(Exception ex) {
        log.error(String.format("未知异常：%s", ex.getMessage()));
         return ResponseUtil.fail(String.format("未知异常：%s", ex.getMessage()));
     }
@@ -112,4 +113,5 @@ public class ExceptionControllerAdvice {
 
         private String errorMsg;
     }
+
 }

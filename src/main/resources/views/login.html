@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>情报管理系统</title>
+    <meta charset="utf-8">
+    <meta name="keywords" content="kms,login">
+    <meta name="description" content="登录页面">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="/jquery.min.js"></script>
+    <script src="/jsencrypt.js"></script>
+    <!-- 引入LayUI 相关 -->
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <script src="/layui/layui.all.js"></script>
+    <style>
+        body {
+            background: url("/local_page/login_background.png") no-repeat;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .layui-card {
+            background-color: #e8e3d2fa;
+        }
+    </style>
+</head>
+<body>
+<!-- 语言切换栏 -->
+<div class="layui-row">
+    <div class="layui-col-md2 layui-col-md-offset10">
+        <div class="layui-card" style="background-color: black">
+            <div class="layui-card-body" style="padding: 0px;">
+                <div class="layui-form">
+                    <div class="layui-form-item" style="margin:0px;">
+                        <label class="layui-form-label"><font color="#f0f8ff" th:text="#{language}">语言：</font></label>
+                        <div class="layui-input-inline" style="width: 207px;margin-right: 0px;">
+                            <select name="language" lay-filter="lan">
+                                <option value="zh_CN">中文简体</option>
+                                <option value="zh_TW">中文繁體</option>
+                                <option value="en_US">ENGLISH</option>
+                                <option value="ja_JP">日本語</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 登录界面 -->
+<div class="layui-fluid" style="margin-top: 20%">
+    <div class="layui-row">
+        <div class="layui-col-md3 layui-col-md-offset7">
+            <div class="layui-card" style="background-color: #e8e3d2fa">
+                <div class="layui-card-body" style="padding: 25px 15px 15px 15px">
+                    <div class="layui-form">
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 84px;" th:text="#{account}">账号：</label>
+                            <div class="layui-input-inline" style="width: 250px;">
+                                <input type="text" name="account" lay-verify="required" th:placeholder="#{account_tip}" autocomplete="off" class="layui-input"/>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 84px;" th:text="#{password}">密码：</label>
+                            <div class="layui-input-inline" style="width: 250px;">
+                                <input type="password" name="password" lay-verify="required" th:placeholder="#{password_tip}" autocomplete="off" class="layui-input"/>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="login" th:text="#{login}">登录</button>
+                                <button class="layui-btn layui-btn-primary" th:text="#{forgot_password}">忘记密码</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<script>
+    var form;
+    layui.use('form', function(){
+        form = layui.form;
+        form.render('select'); //刷新select选择框渲染
+
+        //监听登录
+        form.on('submit(login)', function(data){
+            let dataJson = data.field;
+            let loadIcon = layer.load(2);
+
+            //获取公钥, 每个账号一对密钥
+            $.ajax({
+                url:"/v1/getPublicKey?account=" + dataJson.account + "&refreshKey=true",
+                type:"get",
+                success:function (data) {
+                    if (data) {
+                        //使用公钥进行加密操作
+                        let encrypt = new JSEncrypt();
+                        encrypt.setPublicKey(data);
+                        dataJson.password = encrypt.encrypt(dataJson.password);
+
+                        //登录
+                        $.ajax({
+                            url:"/v1/login",
+                            type:"post",
+                            data:dataJson,
+                            success:function (data) {
+                                layer.close(loadIcon);
+                                layer.msg("登录成功！",{icon:1});
+                            },
+                            error:function (xmlHttpRequest, texrStatus, errorThrown) {
+                                layer.error("登录失败！" + errorThrown,{icon:2});
+                            }
+                        });
+                    }
+                },
+                error:function (msg) {
+                    layer.error(msg,{icon:2});
+                }
+            });
+        });
+
+        //监听语言选择栏切换
+        form.on('select(lan)',function (data) {
+            let optionValue = data.value;
+            location.href = "/v1/page/jumpToPage?pageAddress=login&lan=" + optionValue;
+        });
+    });
+
+    function getRequestParam(paramName) {
+        let reg = new RegExp("(^|&)" + paramName + "=([^&]*(&|$))","i");
+        let url = location.search; //获取url中"?"后的字符串
+        if (url != null) {
+            let regExp = url.match(reg);
+            var content = "";
+            if (regExp != null) {
+                content = regExp[2];
+            }
+        }
+        return content;
+    }
+
+    $(function () {
+        let language = getRequestParam("lan");
+        if (language != null && language != '') {
+            $("select[name='language']").val(language);
+            form.render('select');
+        }
+    });
+</script>
