@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>情报管理系统</title>
+    <meta charset="utf-8">
+    <meta name="keywords" content="kms,index">
+    <meta name="description" content="主页">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="/jquery.min.js"></script>
+    <!-- 引入LayUI 相关 -->
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <script src="/layui/layui.all.js"></script>
+</head>
+<body>
+    <img width="150px;" src="/local_images/fitbit_logo.svg"/>
+    <button class="layui-btn" onclick="dowInvoice()">下载发票</button>
+    <form id="downInvoice">
+        <input type="hidden" name="name"/>
+    </form>
+</body>
+</html>
+<script>
+    function dowInvoice() {
+        $('input[name="name"]').val("cx");
+
+        $("#downInvoice").attr("action", "/v1/invoice/dowloadFitbitInvoice");
+        $("#downInvoice").submit();
+    }
+</script>
