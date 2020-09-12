@@ -7,12 +7,17 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <style type="text/css">
+            body {font-family: SimSun;}
+            @page {size: 210mm 297mm}
+        </style>
     </head>
 
     <body>
-        <img width="150px;" src="../static/local_images/fitbit_logo.svg"/>
+        <div>
+            <img width="150px;" src="${basePath}/local_images/fitbit_logo.png"/>
+        </div>
         <h1>this is a test page</h1>
-        <h2 style="font-family: SimSun;">中文设置</h2>
-
+        <h2>中文设置</h2>
     </body>
 </html>
